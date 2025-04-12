@@ -35,6 +35,10 @@ add_test(test_2 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/my_test
     "1+1*5"
     "6"
 )
+add_test(test_3 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/my_test 
+    "+1"
+    "1"
+)
 
 
 

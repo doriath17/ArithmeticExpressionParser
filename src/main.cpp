@@ -6,7 +6,6 @@
 using namespace prs;
 
 int main(int argc, char** argv){
-
     if (argc < 1){
         std::cout << "Not enought arguments" << std::endl;
     }
