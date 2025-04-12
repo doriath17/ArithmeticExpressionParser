@@ -86,6 +86,8 @@ public:
     
     std::string to_string();
 
+    void breadth_view();
+
     // TODO: temporary solution
     friend Token *reduce_sx(std::vector<Token *> v, int i, int j);
     friend Token *reduce_dx(std::vector<Token *> v, int i, int j);
@@ -107,7 +109,7 @@ private:
 Token *reduce_sx(std::vector<Token *> v, int i, int j);
 Token *reduce_dx(std::vector<Token *> v, int i, int j);
 
-Token *reduce(Token *t, std::vector<Token *> v);
+Token *reduce(std::vector<Token *> v);
 
 
 } 
