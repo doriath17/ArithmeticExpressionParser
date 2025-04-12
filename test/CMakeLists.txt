@@ -1,0 +1,1 @@
+set(TEST_DIR ${CMAKE_SOURCE_DIR}/test)
