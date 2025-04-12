@@ -86,7 +86,7 @@ using namespace prs;
 enum class state{
     // q0 is entered by the caller by finding the pattern value
     q1, // upon reading a digit (and continuing reading a digit)
-    q2, // upon reading a dot: '.'
+    q2, // upon reading a dot: '.' (real value)
     q3, // upon reading a digit after a dot
     q4, // terminal state: upon encountering somthing other than a digit
     q5, // upon not reading a digit after a dot: non-ending state, error in the format
@@ -131,6 +131,7 @@ state transition_q3(char& c){
 AutomaResult prs::parse_value(std::string expr, int i){
     AutomaResult    result {static_cast<std::size_t>(i), nullptr};
     state           current_state{state::q1};
+    token_type      type {token_type::integer};
 
     for (int j = i; j<expr.size(); j++){
         char c = expr[j];
@@ -141,6 +142,7 @@ AutomaResult prs::parse_value(std::string expr, int i){
                 break;
             case state::q2:
                 current_state = transition_q2(c);
+                type = token_type::real;
                 break;
             case state::q3:
                 current_state = transition_q3(c);
@@ -149,7 +151,7 @@ AutomaResult prs::parse_value(std::string expr, int i){
 
         if (current_state == state::q4){
             result.substr_end = j-1;
-            result.t = new Token(token_type::literal, token_category::literal, prs::extract_substring(expr, i, result.substr_end));
+            result.t = new Token(type, token_category::literal, prs::extract_substring(expr, i, result.substr_end));
             return result;
         }
     }
@@ -162,7 +164,7 @@ AutomaResult prs::parse_value(std::string expr, int i){
     }
 
     result.substr_end = expr.size()-1;
-    result.t = new Token(token_type::literal, token_category::literal, prs::extract_substring(expr, i, result.substr_end));
+    result.t = new Token(type, token_category::literal, prs::extract_substring(expr, i, result.substr_end));
 
     return result;
 }

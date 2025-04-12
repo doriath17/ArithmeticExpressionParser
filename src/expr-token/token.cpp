@@ -38,8 +38,10 @@ std::string Token::get_str(){
 
 std::string prs::type_to_string(token_type type){
     switch (type) {
-        case token_type::literal:
-            return std::string{"LIT"};
+        case token_type::integer:
+            return std::string{"INTEGER"};
+        case token_type::real:
+            return std::string{"REAL"};
         case token_type::add:
             return std::string{"ADD"};
         case token_type::sub:
@@ -69,7 +71,7 @@ token_priority Token::get_priority(){
             return token_priority::p0;
         case token_type::mul: case token_type::div:
             return token_priority::p1;
-        case token_type::literal:
+        case token_type::integer: case token_type::real:
             return token_priority::p2;
     }
     return token_priority::p3; // expr  
@@ -241,3 +243,22 @@ void Token::breadth_view(){
     }
 }
 
+double prs::evaluate_binary_operator(Token *t){
+    double sx_val = t->sx->evaluate();
+    double dx_val = t->dx->evaluate();
+}
+
+/**
+ * Evaluate works on well formed tree: 
+ * those obtained from using parse(v) and reduce(v)
+ */
+double Token::evaluate(){
+    double result = 0.0;
+    switch (this->category) {
+        case token_category::literal: 
+            
+        case token_category::binary_op:
+
+            break;
+    }
+}
