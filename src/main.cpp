@@ -15,4 +15,5 @@ int main(int argc, char** argv){
 
     Token *root = reduce(v);
     root->breadth_view();
+    std::cout << "result = " << root->evaluate() << std::endl;
 }
