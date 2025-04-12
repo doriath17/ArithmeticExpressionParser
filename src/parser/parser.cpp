@@ -193,11 +193,11 @@ bool is_valid(token_category last, token_category curr){
 }
 
 
-Token *prs::parse(std::string expr){
+std::vector<Token *> prs::parse(std::string expr){
     AutomaResult a_result{};
-    Token *head = nullptr;
-    Token *curr;
     token_category last_category = token_category::expr;
+
+    std::vector<Token *> v{};
 
     for (int i=0; i<expr.size(); i++){
         char& c = expr[i];
@@ -220,15 +220,8 @@ Token *prs::parse(std::string expr){
         }
         last_category = a_result.t->get_category();
 
-        if (head == nullptr){
-            head = a_result.t;
-            curr = head;
-        } else {
-            a_result.t->set_sx(curr);
-            curr->set_dx(a_result.t);
-            curr = a_result.t;
-        }
+        v.push_back(a_result.t);
     }
 
-    return head;
+    return v;
 }

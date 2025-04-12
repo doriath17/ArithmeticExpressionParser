@@ -7,8 +7,13 @@
 // prs for parser
 namespace prs {
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// (categoria, priorita')
+
+// token categories definition
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 enum class token_category {
     expr,
@@ -17,6 +22,14 @@ enum class token_category {
     binary_op,
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// token types definition
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 enum class token_type {
     expr,
     literal,
@@ -24,15 +37,38 @@ enum class token_type {
     sub, 
     mul, 
     div,
-    cos,
-    sin,
-    tan,
-    sqrt,
-    log,
+    // cos,
+    // sin,
+    // tan,
+    // sqrt,
+    // log,
 };
 
 std::string type_to_string(token_type type);
-    
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// priority definition
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+enum class token_priority {
+    p0, 
+    p1, 
+    p2, 
+    p3,
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// token definition
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class Token {
 public:
 
@@ -40,14 +76,20 @@ public:
 
     void set_sx(Token *sx);
     void set_dx(Token *dx);
-    
-    token_type get_type();
-    token_category get_category();
-    Token *get_sx();
-    Token *get_dx();
-    std::string get_str();
 
+    token_type      get_type();
+    token_category  get_category();
+    token_priority  get_priority();
+    Token *         get_sx();
+    Token *         get_dx();
+    std::string     get_str();
+    
     std::string to_string();
+
+    // TODO: temporary solution
+    friend Token *reduce_sx(std::vector<Token *> v, int i, int j);
+    friend Token *reduce_dx(std::vector<Token *> v, int i, int j);
+
 
 
     // void evaluate();
@@ -56,10 +98,16 @@ public:
 private:
     token_type type;
     token_category category;
+    token_priority priority;
     std::string str;
     Token *sx, *dx;
 };
 
+
+Token *reduce_sx(std::vector<Token *> v, int i, int j);
+Token *reduce_dx(std::vector<Token *> v, int i, int j);
+
+Token *reduce(Token *t, std::vector<Token *> v);
 
 
 } 

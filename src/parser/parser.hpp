@@ -38,7 +38,7 @@ AutomaResult parse_operator(std::string expr, int j);
 
 AutomaResult parse_value(std::string expr, int j);
 
-Token *parse(std::string expr);
+std::vector<Token *> parse(std::string expr);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
