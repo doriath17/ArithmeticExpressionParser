@@ -220,6 +220,8 @@ AutomaResult prs::parse_value(std::string expr, int i){
 // an expr can represent an operator right argument
 bool is_valid(token_category last, token_category curr){
     switch (last) {
+    case token_category::temporary:
+        return true;
     case token_category::expr:              // if last == expr can only be the left arg of a binary operator
         if (curr != token_category::binary_op) return false;
         break;
@@ -239,7 +241,7 @@ bool is_valid(token_category last, token_category curr){
 
 std::vector<Token *> prs::parse(std::string expr){
     AutomaResult a_result{};
-    token_category last_category = token_category::unary_op;
+    token_category last_category = token_category::temporary;
 
     std::vector<Token *> v{};
 
@@ -251,10 +253,22 @@ std::vector<Token *> prs::parse(std::string expr){
         } else if (prs::is_operator_char(c)) {
             a_result = parse_operator(expr, i);
         } else if (c == '('){
+            
             a_result = parse_parethesis(expr, i);
             if (a_result.t == nullptr){
                 throw std::runtime_error{"parenthesis mismatch"};
             }
+
+            // implicit multiplication
+            if ((last_category == token_category::expr &&  a_result.t->get_category() == token_category::expr) ||
+                (last_category == token_category::literal && 
+                (a_result.t->get_category() == token_category::unary_op || a_result.t->get_category() == token_category::expr)))
+            {
+                v.push_back(new Token{token_type::mul, token_category::binary_op, std::string{'*'}});
+                last_category = token_category::binary_op;
+            }
+
+
         } else if (std::isblank(c)){
             continue;
         } else {
