@@ -39,6 +39,8 @@ std::string Token::get_str(){
 
 std::string prs::type_to_string(token_type type){
     switch (type) {
+        case token_type::expr:
+            return std::string{"EXPR"};
         case token_type::integer:
             return std::string{"INTEGER"};
         case token_type::real:

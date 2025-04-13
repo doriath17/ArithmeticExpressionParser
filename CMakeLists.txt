@@ -26,15 +26,15 @@ target_compile_features(evaluate_test PRIVATE cxx_std_17)
 target_include_directories(evaluate_test PUBLIC include/parser)
 target_link_libraries(evaluate_test PRIVATE parser)
 
-add_test(test_0 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/evaluate_test 
+add_test(evaluate_test_0 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/evaluate_test 
     "1+ 1425+48-2312.67 *3" "-5464.01"
     "1+1" "2"
 )
-add_test(test_1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/evaluate_test 
+add_test(evaluate_test_1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/evaluate_test 
     "1+1"
     "2"
 )
-add_test(test_2 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/evaluate_test 
+add_test(evaluate_test_2 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/evaluate_test 
     "1+1*5"
     "6"
 )
@@ -48,7 +48,7 @@ target_compile_features(parser_test PRIVATE cxx_std_17)
 target_include_directories(parser_test PUBLIC include/parser)
 target_link_libraries(parser_test PRIVATE parser)
 
-add_test(parser_test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/parser_test "1+ 1425+48-2312.67 *3")
+add_test(parser_test_0 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/parser_test "1+(1425+(48))-2312.67 *3")
 
 
 

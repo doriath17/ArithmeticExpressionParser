@@ -53,6 +53,47 @@ std::string prs::extract_substring(const std::string& str, int i, int j){
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// parenthesis parser
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/**
+ * 
+ * return: a result with t == nullptr if there is an error (the caller should check this)
+ */
+AutomaResult prs::parse_parethesis(std::string expr, int i){
+    int count = 1;
+    std::string str {};
+    AutomaResult result {static_cast<std::size_t>(i), nullptr};
+
+    // with i++ and the check on count != 0 eliminate the outermost parenthesis
+    for (i++; i<expr.size() && count>0; i++){
+        char c = expr[i];
+
+        if (c == ')'){
+            count--;
+        } else if (c == '(') {
+            count++;
+        }
+
+        if (count != 0){
+            str.push_back(c);
+        }
+    }
+
+    if (count == 0){
+        result.substr_end = i-1;
+        result.t = new Token{token_type::expr, token_category::expr, str};
+    }
+
+    return result;
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // operator parser
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -206,19 +247,22 @@ std::vector<Token *> prs::parse(std::string expr){
 
         if (std::isdigit(c)){
             a_result = parse_value(expr, i);
-            i = a_result.substr_end;
         } else if (prs::is_operator_char(c)) {
             a_result = parse_operator(expr, i);
+        } else if (c == '('){
+            a_result = parse_parethesis(expr, i);
+            if (a_result.t == nullptr){
+                throw std::runtime_error{"parenthesis mismatch"};
+            }
         } else if (std::isblank(c)){
             continue;
         } else {
-            std::cout << "Error: string malformed.\nExiting the program...\n";
-            exit(-1);
+            throw std::runtime_error{"invalid character: " + c};
         }
 
+        i = a_result.substr_end;
         if (!is_valid(last_category, a_result.t->get_category())){
-            std::cout << "Error: string malformed.\nExiting the program...\n";
-            exit(-1);
+            throw std::runtime_error{"invalid state -- token: " + a_result.t->to_string()};
         }
         last_category = a_result.t->get_category();
 

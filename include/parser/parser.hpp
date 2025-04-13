@@ -34,6 +34,8 @@ std::string extract_substring(const std::string& str, int i, int j);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+AutomaResult parse_parethesis(std::string expr, int j);
+
 AutomaResult parse_operator(std::string expr, int j);
 
 AutomaResult parse_value(std::string expr, int j);
