@@ -217,19 +217,20 @@ AutomaResult prs::parse_value(std::string expr, int i){
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+// an expr can represent an operator right argument
 bool is_valid(token_category last, token_category curr){
     switch (last) {
-    case token_category::expr:
-        return true;
-    case token_category::literal:
-        if (curr == token_category::literal || curr == token_category::unary_op) return false;
+    case token_category::expr:              // if last == expr can only be the left arg of a binary operator
+        if (curr != token_category::binary_op) return false;
+        break;
+    case token_category::literal:           // if last == literal can only be the left arg of a binary operator
+        if (curr != token_category::binary_op) return false;
         break;
     case token_category::unary_op:
-        if (curr == token_category::binary_op) return false;
+        if (curr == token_category::binary_op) return false; // can be literal or expr
         break;
     case token_category::binary_op:
-        if (curr == token_category::binary_op) return false;
+        if (curr == token_category::binary_op) return false; // can be literal or expr or unary operator
         break;    
     }
     return true;
@@ -238,7 +239,7 @@ bool is_valid(token_category last, token_category curr){
 
 std::vector<Token *> prs::parse(std::string expr){
     AutomaResult a_result{};
-    token_category last_category = token_category::expr;
+    token_category last_category = token_category::unary_op;
 
     std::vector<Token *> v{};
 
