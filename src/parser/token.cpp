@@ -37,32 +37,34 @@ std::string Token::get_str(){
     return str;
 }
 
-std::string prs::type_to_string(token_type type){
+std::string prs::to_string(token_type type){
+    std::string ret{};
     switch (type) {
         case token_type::expr:
-            return std::string{"EXPR"};
+            return std::string{"expr"};
         case token_type::integer:
-            return std::string{"INTEGER"};
+            return std::string{"integer"};
         case token_type::real:
-            return std::string{"REAL"};
+            return std::string{"real"};
         case token_type::add:
-            return std::string{"ADD"};
+            return std::string{"add"};
         case token_type::sub:
-            return std::string{"SUB"};
+            return std::string{"sub"};
         case token_type::mul:
-            return std::string{"MUL"};
+            return std::string{"mul"};
         case token_type::div:
-            return std::string{"DIV"};
+            return std::string{"div"};
     }
+
+    return ret;
 }
 
 std::string Token::to_string(){
     std::string ret;
-    ret.append("[type: ")
-        .append(type_to_string(type))
-        .append(", expr: ")
+    ret.append("[" + prs::to_string(type))
+        .append(",\"")
         .append(str)
-        .append("]");
+        .append("\"]");
     return ret;
 }
 
