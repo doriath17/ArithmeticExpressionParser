@@ -9,8 +9,6 @@ int main(int argc, char** argv){
     std::string input{argv[1]};
     double expected = std::atof(argv[2]);
 
-    std::cout << std::endl;
-
     double result = evaluate(input);
 
     std::cout << "result: " << result << std::endl;
