@@ -1,4 +1,5 @@
 #include "token.hpp"
+#include "parser.hpp"
 #include <string>
 #include <stdexcept>
 #include <iostream>
@@ -143,7 +144,9 @@ Token *prs::reduce_dx(std::vector<Token *> v, int i, int j){
     Token *t = nullptr;
 
     if (i == j){    // in this case must be a literal
-        if (t = v[i]; t->category != token_category::literal)
+        if (t = v[i]; t->category == token_category::expr){ // if it is an expr let it pass: the expr will be expanded during evaluation
+            return t;
+        } else if (t->category != token_category::literal)
             throw std::runtime_error{std::string{"string malformed -- literal not leaf: "} + t->str};
         else return t;
     } else if (j < i){  // there are no more tokens in v
@@ -182,7 +185,9 @@ Token *prs::reduce_sx(std::vector<Token *> v, int i, int j){
     Token *t = nullptr;
 
     if (i == j){    // in this case must be a literal
-        if (t = v[i]; t->category != token_category::literal)
+        if (t = v[i]; t->category == token_category::expr){ // if it is an expr let it pass: the expr will be expanded during evaluation
+            return t;
+        } else if (t->category != token_category::literal)
             throw std::runtime_error{std::string{"string malformed -- literal not leaf: "} + t->str};
         else return t;
     } else if (j < i){  // there are no more tokens in v
@@ -248,6 +253,11 @@ void Token::breadth_view(){
     }
 }
 
+double prs::evaluate_expr(Token *t){
+    return reduce(parse(t->str))->evaluate();
+}
+
+
 double prs::evaluate_literal(Token *t){
     switch (t->type){
         case token_type::integer:
@@ -287,6 +297,8 @@ double prs::evaluate_unary_operator(Token *t){
 double Token::evaluate(){
     double result = 0.0;
     switch (this->category) {
+        case token_category::expr:
+            return evaluate_expr(this);
         case token_category::literal: 
             return evaluate_literal(this);
         case token_category::binary_op:

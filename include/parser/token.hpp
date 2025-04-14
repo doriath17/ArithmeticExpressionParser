@@ -95,6 +95,7 @@ public:
     friend Token *reduce_sx(std::vector<Token *> v, int i, int j);
     friend Token *reduce_dx(std::vector<Token *> v, int i, int j);
 
+    friend double evaluate_expr(Token *t);
     friend double evaluate_literal(Token *t);
     friend double evaluate_unary_operator(Token *t);
     friend double evaluate_binary_operator(Token *t);
@@ -116,6 +117,8 @@ Token *reduce_sx(std::vector<Token *> v, int i, int j);
 Token *reduce_dx(std::vector<Token *> v, int i, int j);
 
 Token *reduce(std::vector<Token *> v);
+
+double evaluate_expr(Token *t);
 
 double evaluate_literal(Token *t);
 

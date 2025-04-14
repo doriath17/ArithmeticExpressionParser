@@ -42,6 +42,7 @@ AutomaResult parse_value(std::string expr, int j);
 
 std::vector<Token *> parse(std::string expr);
 
+void parse_verbose(std::string expr);
 
 double evaluate(std::string expr);
 

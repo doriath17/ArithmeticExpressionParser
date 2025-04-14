@@ -287,6 +287,18 @@ std::vector<Token *> prs::parse(std::string expr){
     return v;
 }
 
+void prs::parse_verbose(std::string expr){
+    std::vector<Token *> v = parse(expr);
+
+    std::cout << "expr: " << expr << std::endl;
+
+    for (int i=0; i<v.size(); i++){
+        std::cout << v[i]->to_string() << std::endl;
+    }
+
+    std::cout << std::endl;
+}
+
 double prs::evaluate(std::string expr){
     return reduce(parse(expr))->evaluate();
 }
