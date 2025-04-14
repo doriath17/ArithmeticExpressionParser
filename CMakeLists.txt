@@ -8,7 +8,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_library(parser
     src/parser/parser.cpp 
-    src/parser/token.cpp 
+    
+    src/parser/token_evaluate.cpp
+    src/parser/token_reduce.cpp
+    src/parser/token_tree_view.cpp
+    src/parser/token.cpp
+
 )
 target_compile_features(parser PRIVATE cxx_std_17)
 target_include_directories(parser PUBLIC include/parser)
