@@ -7,6 +7,11 @@ enable_testing()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_library(parser
+    src/parser/parser_expr.cpp 
+    src/parser/parser_literal.cpp 
+    src/parser/parser_operator.cpp 
+    src/parser/parser_utility.cpp 
+    src/parser/parser_verbose.cpp 
     src/parser/parser.cpp 
     
     src/parser/token_evaluate.cpp
