@@ -5,16 +5,36 @@
 using namespace prs;
 using namespace std;
 
-int main(int argc, char** argv){
-    std::vector<std::string> v {
-        string{"1+(1)"}, string{"2"},
-        string{"1.24((1425+(48))-2312.67)*3"}, string{"-3123.5724"},
-        string{"(3 + 5)(5 * 3)"}, string{"120"},
-        string{"(3 + 5)"}, string{"8"},
-    };
+static int tested = 0;
+static int passed = 0;
 
-    for (int i=0; i<v.size(); i += 2){
-        double result = evaluate_verbose(v[i]);
-        cout << "result: " << result << ", expected: " << atof(v[i+1].c_str()) << endl;
+int evaluate_test(string expr, string result_str){
+    try {
+        tested++;
+        double result = evaluate_verbose(expr);
+        double expected = atof(result_str.c_str());
+        cout << "result: " << result << ", expected: " << expected << endl << endl;
+        if (to_string(result) == to_string(expected)){
+            passed++;
+            return 0; 
+        } else {
+            return 1;
+        }
+    } catch (runtime_error e){
+        cout << e.what() << endl;
+        passed++;
+        return 0;
     }
+}
+
+int main(int argc, char** argv){
+
+    evaluate_test("1+(1)", "2");
+    evaluate_test("1.24((1425+(48))-2312.67)*3", "-3123.5724");
+    evaluate_test("(3 + 5)(5 * 3)", "120");
+    evaluate_test("(3 + 5)", "8");
+    evaluate_test("1/0", "null");
+
+    cout << "passed: " << passed << " / " << tested << endl;
+
 }

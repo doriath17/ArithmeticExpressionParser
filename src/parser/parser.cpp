@@ -242,8 +242,8 @@ bool is_valid(token_category last, token_category curr){
 std::vector<Token *> prs::parse(std::string expr){
     AutomaResult a_result{};
     token_category last_category = token_category::temporary;
-
     std::vector<Token *> v{};
+
 
     for (int i=0; i<expr.size(); i++){
         char& c = expr[i];
@@ -304,6 +304,11 @@ double prs::evaluate(std::string expr){
 }
 
 double prs::evaluate_verbose(std::string expr){
+
+    std::cout << "///////////////////////////////////////////////////////////////////" << std::endl;
+
+    std::cout << "\nexpr: " << expr << std::endl;
+
     std::vector<Token *> v = parse(expr);
 
     std::cout << std::endl;

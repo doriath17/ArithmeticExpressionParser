@@ -235,7 +235,11 @@ void Token::breadth_view(){
     while (not current_level.empty()){
         // consume the current level to populate the next level
         Token *t = current_level.front();
-        level_str.append("[" + t->str + "]");
+        if (t->category == token_category::expr){
+            level_str.append("[\"" + t->str + "\"]");
+        } else {
+            level_str.append("[" + t->str + "]");
+        }
 
         if (t->sx != nullptr)
             next_level.push_back(t->sx);
